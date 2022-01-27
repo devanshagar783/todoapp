@@ -1,8 +1,7 @@
 const initialState = {
-    email: '',
-    password: '',
     token: '',
-    isLoggedIn: false
+    isLoggedIn: false,
+    todos: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +11,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isLoggedIn: true,
                 token: action.payload
+            }
+        case "ADDING_TODO":
+            return {
+                ...state,
+                todos: action.paylaod[0]
             }
         default:
             return state

@@ -1,83 +1,30 @@
-import React, { Component, useState, getState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './loginPage.css'
-import validateUser from './LoginActions'
-import { connect, useSelector, useDispatch, useStore } from "react-redux";
-// import { useHistory } from 'react-router-dom'
+import {validateUser} from './LoginActions'
+import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import {Navigate} from 'react-router-dom'
 const axios = require('axios')
-
-// export default function LoginPage(props) {
-
-//     const store = useStore()
-//     const state = store.getState()
-//     // console.log()
-
-//     return (
-//         <div>
-//             <h2>Hello</h2>
-//             <div className='login-div'>
-//                 <h1>Please Login</h1>
-//                 <form onSubmit={submitForm}>
-//                     <div>
-//                         <label>Email address:</label>
-//                         <input type="email" value={state.email} onChange={handleEmailChange} />
-//                     </div>
-//                     {/* <div>
-//                         <label>Password:</label>
-//                         <input type="password" value={props.password} onChange={this.handlePasswordChange} />
-//                     </div>
-//                     <button type='Submit'>Submit</button>  */}
-//                 </form>
-//             </div>
-//         </div>
-//     )
-// }
-
-
-
-
-
-// const mapStateToProps = state => {
-//     return {
-//         email: state.email,
-//         password: state.password,
-//         token: state.token,
-//         isLoggedIn: state.isLoggedIn
-//     }
-// }
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         validateUser: (token) => dispatch(validateUser(token))
-//     }
-// }
 
 function LoginPage(props) {
 
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [token, setToken] = useState('')
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    // const [token, setToken] = useState('')
+    // const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+    // console.log("Props:",props)
     useEffect(() => {
-        if(localStorage.getItem("token")){
+        if (localStorage.getItem("token")) {
             navigate('/')
         }
     })
 
     const handleEmailChange = (event) => {
-        // setEmail({
-        //     email: event.target.value
-        // })
         setEmail(event.target.value)
     }
 
     const handlePasswordChange = (event) => {
-        // setPassword({
-        //     password: event.target.value
-        // })
         setPassword(event.target.value)
     }
 
@@ -98,44 +45,21 @@ function LoginPage(props) {
                     const token = response.data.token
                     props.validateUser(token)
                     localStorage.setItem("token", token)
+                    // console.log("Store:",props.getState())
                     navigate('/')
-                    // this.props.history.push('/create-todo-task');
-                    // this.context.history.push('/create-toto-task')
-                    console.log("here");
-                    // <Navigate to="/create-todo-task" replace={true}/>;
-                    // valid(token)
-                    // history.push('/')
                 })
                 .catch(error => {
-                    // alert("Error: "+ error)
                     console.log("Error: ", error)
                     const token = ""
                     props.validateUser(token)
                 })
-            // }
         }
         else
             alert("please correct email")
-        // alert("hello")
     }
 
-    // componentDidMount(){
-    // localStorage.clear()
-    // const token=localStorage.getItem("token")
-    // this.props.validateUser(token)
-    // console.log(token) 
-    // reroute here
-    // }
-
-    // componentWillMount(){
-
-    // }
-
-    // render() {
-    // const history = useHistory()
-
     return (
-        <div>
+        // <div>
             <div className='login-div'>
                 <h1>Please Login</h1>
                 <form onSubmit={SubmitForm}>
@@ -150,15 +74,8 @@ function LoginPage(props) {
                     <button type='Submit'>Submit</button>
                 </form>
             </div>
-        </div>
+        // </div>
     )
-    // }
 }
 
 export default connect(null, { validateUser })(LoginPage)
-
-
-
-
-
-// export default LoginPage

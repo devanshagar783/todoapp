@@ -1,0 +1,54 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.nav-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: aliceblue;
+    height: 50px;
+    align-items: center;
+    padding: 0px 30px;
+}
+
+.logout, .create-todo{
+    padding: 5px;
+    background-color: rgb(83, 141, 216);
+    border: none;
+    border-radius: 8px;
+    color: white;
+}
+
+.tasks-list{
+    margin-top: 40px;
+    margin-left: 250px
+}
+
+.task-card{
+    display: flex;
+    border-radius: 16px;
+    border: 1px solid;
+    flex-direction: row;
+    justify-content: space-evenly;
+    /* align-items: center; */
+    margin-bottom: 20px;
+    padding: 20px;
+    /* margin: 0px 50% 20px 50%; */
+    width: 700px;
+}
+
+.yellow{
+    background-color: yellow;
+}
+
+.red{
+    background-color: tomato;
+}
+
+.edit-icon, .delete-icon{
+    height: 20px;
+    margin-left: 20px;
+}

@@ -1,5 +1,4 @@
-const validateUser = (payload) => {
-    console.log("Payload: ", payload)
+export const validateUser = (payload) => {
     if (payload === "") {
         return {
             type: "INVALID",
@@ -9,9 +8,14 @@ const validateUser = (payload) => {
     else {
         return {
             type: "VALID_USER",
-            payload: payload
+            payload: payload[0]
         }
     }
 }
 
-export default validateUser
+export const addTodoFromLocal = (payload) => {
+    return {
+        type: "ADDING_TODO",
+        paylaod: payload
+    }
+}
