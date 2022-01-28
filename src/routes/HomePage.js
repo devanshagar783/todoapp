@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect, useStore } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { addTodoFromLocal } from "./LoginActions";
@@ -10,19 +10,44 @@ function HomePage(props) {
 
 	const navigate = useNavigate()
 	const store = useStore()
+	const [todoList, setTodoList] = useState([])
+	const [dummy, setDummy] = useState(false)
 
 	useEffect(() => {
 		if (!localStorage.getItem("token")) {
 			navigate('/login')
 		}
+		console.log("UseEffextx")
+		setList(fetchData())
+		// dummy = "hello"
 	}, [])
 
-	const checkLogin = () => {
+	const setList = (newList) => {
+		setTodoList(newList)
 	}
 
 	const createTODO = () => {
 		navigate('/create-todo-task')
 	}
+
+	const handleEdit = (index) => {
+		console.log("Clicked:", index)
+		navigate(`/update-task/${index}`)
+	}
+
+	const handleDelete = (index) => {
+		var list = store.getState().todos
+		console.log("StateTodo:",todoList)
+		console.log("StoreTodo:",list)
+		list.splice(index, 1)
+		setTodoList(list)
+		setDummy(!dummy)
+		localStorage.setItem("todos", JSON.stringify(list))
+		console.log("Prpop Store:", list)
+		console.log("Prpop State:", todoList)
+	}
+
+	//make checkboxes, thne make a list of selected and them map it to delete the selectd indexesx
 
 	function taskCard(task, index) {
 		const date = task.date
@@ -39,8 +64,8 @@ function HomePage(props) {
 				<p>{task.date}</p>
 				<p>{task.priority}</p>
 				<div>
-					<img className='edit-icon' src={editIcon} />
-					<img className='delete-icon' src={deleteIcon} />
+					<img className='edit-icon' src={editIcon} onClick={() => handleEdit(index)} />
+					<img className='delete-icon' src={deleteIcon} onClick={() => handleDelete(index)} />
 				</div>
 			</li>
 		)
@@ -60,20 +85,29 @@ function HomePage(props) {
 		return dt
 	}
 
-	function fetchTodo() {
+	function fetchData(){
+		console.log("FetchData")
+		console.log("StateTodo:",todoList)
 		var localTo = JSON.parse(localStorage.getItem("todos"))
-		if (localTo) {
+		let todos = store.getState().todos
+		if (localTo.length > 0) {
 			var lis = []
 			lis.push(localTo)
-			if (lis.length > store.getState().todos.length)
+			if (lis.length > todos.length)
 				props.addTodoFromLocal(lis)
 			else
 				localStorage.setItem("todos", JSON.stringify(todos))
 		}
-		var todos = store.getState().todos
+		return todos
+	}
+
+	function FetchTodo() {
+		console.log("FetchTodo")
+		console.log("StateTodo:",todoList)
+		var todos = fetchData()
 		localStorage.setItem("todos", JSON.stringify(todos))
-		if (todos.length > 0) {
-			var listOfTodo = todos.map((todo, index) => taskCard(todo, index))
+		if (todoList.length > 0) {
+			let listOfTodo = todoList.map((todo, index) => taskCard(todo, index))
 			return (<ul>{listOfTodo}</ul>)
 		}
 		else {
@@ -81,7 +115,6 @@ function HomePage(props) {
 		}
 	}
 
-	checkLogin()
 	return (
 		<div>
 			<header>
@@ -92,10 +125,16 @@ function HomePage(props) {
 				</nav>
 			</header>
 			<div className='tasks-list'>
-				{fetchTodo()}
+				<FetchTodo />
 			</div>
 		</div>
 	)
 }
 
-export default connect(null, { addTodoFromLocal })(HomePage)
+function mapStateToProps(state) {
+	return {
+		todos: state.todos
+	}
+}
+
+export default connect(mapStateToProps, { addTodoFromLocal })(HomePage)

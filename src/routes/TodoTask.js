@@ -1,15 +1,28 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { connect, useStore } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import './TodoTask.css'
 
 function TodoTask(props) {
 
 	const navigate = useNavigate()
-	const [title, setTitle] = useState('')
+	const [title, setTitle] = useState('')//
 	const [description, setDescription] = useState('')
 	const [dueDate, setDueDate] = useState(new Date())
 	const [priority, setPriority] = useState('Medium')
+	const task_index = useParams()
+	const store = useStore()
+
+	useEffect(() => {
+		if (task_index.id) {
+			console.log("Task:",task_index.id)
+			const tod = store.getState().todos[task_index.id]
+			setTitle(tod.title)
+			setDescription(tod.des)
+			setDueDate(tod.date)
+			setPriority(tod.priority)
+		}
+	}, [])
 
 	const handleTitleChange = (event) => {
 		setTitle(event.target.value)
@@ -29,13 +42,21 @@ function TodoTask(props) {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		let todo = {
-			title: title,
-			des: description,
-			date: dueDate,
-			priority: priority
+		if (task_index.id>=0) {
+			props.todos[task_index.id].title = title
+			props.todos[task_index.id].des = description
+			props.todos[task_index.id].date = dueDate
+			props.todos[task_index.id].priority = priority
 		}
-		props.todos.push(todo)
+		else {
+			let todo = {
+				title: title,
+				des: description,
+				date: dueDate,
+				priority: priority
+			}
+			props.todos.push(todo)
+		}
 		navigate('/')
 	}
 
@@ -49,8 +70,7 @@ function TodoTask(props) {
 		if (month < 10)
 			month = "0" + month
 		year = today.getFullYear()
-		let dt = date + '-' +month+'-'+year
-		// console.log("Date", dt
+		let dt = year + '-' + month + '-' + date
 		return dt
 	}
 
@@ -61,7 +81,7 @@ function TodoTask(props) {
 				<form onSubmit={handleSubmit}>
 					<div className='input-area'>
 						<label>Title</label><br />
-						<input type='text' maxLength={20} value={title} onChange={handleTitleChange} required />
+						<input type='text' maxLength={20} value={title} onChange={handleTitleChange} readOnly={task_index.id?true:false} required />
 					</div>
 					<div className='input-area'>
 						<label>Description</label><br />
@@ -69,7 +89,7 @@ function TodoTask(props) {
 					</div>
 					<div className='input-area'>
 						<label>Due Date</label><br />
-						<input type='date' value={dueDate} min={disablePastDates()} onChange={handleDueDateChange} required />
+						<input type='date' value={dueDate} min={disablePastDates()} readOnly={task_index.id?true:false} onChange={handleDueDateChange} required />
 					</div>
 					<div className='input-area'>
 						<label>Priority</label><br />

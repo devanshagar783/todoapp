@@ -16,7 +16,6 @@ ReactDOM.render(
 			<Routes>
 				<Route path="/" element={<HomePage />} />
 				<Route path="/login" element={<LoginPage />} />
-				
 				<Route path="/create-todo-task" element={<TodoTask />} />
 				<Route path="/update-task/:id" element={<TodoTask />} />
 				<Route path='*' element={<NotFound />} />
