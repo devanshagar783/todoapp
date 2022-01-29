@@ -126,6 +126,7 @@ function HomePage(props) {
 
 	function handleLogout() {
 		localStorage.clear()
+		props.todos.length = 0
 		navigate('/login')
 	}
 

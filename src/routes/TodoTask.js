@@ -16,7 +16,7 @@ function TodoTask(props) {
 	useEffect(() => {
 		if (!localStorage.getItem("token")) {
 			navigate('/login')
-		}		
+		}
 		else if (task_index.id) {
 			const tod = store.getState().todos[task_index.id]
 			setTitle(tod.title)
@@ -44,7 +44,7 @@ function TodoTask(props) {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		if (task_index.id>=0) {
+		if (task_index.id >= 0) {
 			props.todos[task_index.id].title = title
 			props.todos[task_index.id].des = description
 			props.todos[task_index.id].date = dueDate
@@ -76,14 +76,23 @@ function TodoTask(props) {
 		return dt
 	}
 
+	function handleLogout() {
+		localStorage.clear()
+		props.todos.length = 0
+		navigate('/login')
+	}
+
 	return (
-		<div>
+		<div className='todo-main-div'>
+			<div className='logout-div' >
+				<button className='logout-btn' onClick={handleLogout}>Logout</button>
+			</div>
 			<div className='task-details'>
 				<h3>Enter Task Details</h3>
 				<form onSubmit={handleSubmit}>
 					<div className='input-area'>
 						<label>Title</label><br />
-						<input type='text' maxLength={20} value={title} onChange={handleTitleChange} readOnly={task_index.id?true:false} required />
+						<input type='text' maxLength={20} value={title} onChange={handleTitleChange} readOnly={task_index.id ? true : false} required />
 					</div>
 					<div className='input-area'>
 						<label>Description</label><br />
@@ -91,7 +100,7 @@ function TodoTask(props) {
 					</div>
 					<div className='input-area'>
 						<label>Due Date</label><br />
-						<input type='date' value={dueDate} min={disablePastDates()} readOnly={task_index.id?true:false} onChange={handleDueDateChange} required />
+						<input type='date' value={dueDate} min={disablePastDates()} readOnly={task_index.id ? true : false} onChange={handleDueDateChange} required />
 					</div>
 					<div className='input-area'>
 						<label>Priority</label><br />
