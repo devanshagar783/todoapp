@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useStore } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { addTodoFromLocal } from "./LoginActions";
+import { addTodoFromLocal } from "./Actions";
 import './HomePage.css'
 import editIcon from '../icons/edit.png'
 import deleteIcon from '../icons/delete.png'
@@ -11,43 +11,55 @@ function HomePage(props) {
 	const navigate = useNavigate()
 	const store = useStore()
 	const [todoList, setTodoList] = useState([])
+	const [checkList, setCheckList] = useState([])
 	const [dummy, setDummy] = useState(false)
 
 	useEffect(() => {
 		if (!localStorage.getItem("token")) {
 			navigate('/login')
 		}
-		console.log("UseEffextx")
-		setList(fetchData())
-		// dummy = "hello"
+		setTodoList(fetchData())
 	}, [])
 
-	const setList = (newList) => {
-		setTodoList(newList)
-	}
+	useEffect(() => {
+		let array = new Array(todoList.length).fill(false)
+		setCheckList(array)
+	}, [todoList.length])
 
 	const createTODO = () => {
 		navigate('/create-todo-task')
 	}
 
 	const handleEdit = (index) => {
-		console.log("Clicked:", index)
 		navigate(`/update-task/${index}`)
 	}
 
 	const handleDelete = (index) => {
 		var list = store.getState().todos
-		console.log("StateTodo:",todoList)
-		console.log("StoreTodo:",list)
 		list.splice(index, 1)
 		setTodoList(list)
 		setDummy(!dummy)
 		localStorage.setItem("todos", JSON.stringify(list))
-		console.log("Prpop Store:", list)
-		console.log("Prpop State:", todoList)
 	}
 
-	//make checkboxes, thne make a list of selected and them map it to delete the selectd indexesx
+	function handleDeleteMul() {
+		var rev = checkList.reverse()
+		var list = store.getState().todos
+		rev.forEach((value, index) => {
+			if (value == true) {
+				list.splice(rev.length - 1 - index, 1)
+			}
+		})
+		setTodoList(list)
+		setDummy(!dummy)
+		localStorage.setItem("todos", JSON.stringify(list))
+	}
+
+	const clickedCheck = (index) => {
+		var newList=checkList
+		newList[index] = !newList[index]
+		setCheckList(newList)
+	}
 
 	function taskCard(task, index) {
 		const date = task.date
@@ -60,6 +72,7 @@ function HomePage(props) {
 			color = "none"
 		return (
 			<li key={index} className={color === "yellow" ? 'task-card yellow' : color === "red" ? 'task-card red' : 'task-card'}>
+				<input type={'checkbox'} onChange={() => clickedCheck(index)} />
 				<p>{task.title}</p>
 				<p>{task.date}</p>
 				<p>{task.priority}</p>
@@ -85,12 +98,10 @@ function HomePage(props) {
 		return dt
 	}
 
-	function fetchData(){
-		console.log("FetchData")
-		console.log("StateTodo:",todoList)
+	function fetchData() {
 		var localTo = JSON.parse(localStorage.getItem("todos"))
 		let todos = store.getState().todos
-		if (localTo.length > 0) {
+		if (localTo && localTo.length > 0) {
 			var lis = []
 			lis.push(localTo)
 			if (lis.length > todos.length)
@@ -102,8 +113,6 @@ function HomePage(props) {
 	}
 
 	function FetchTodo() {
-		console.log("FetchTodo")
-		console.log("StateTodo:",todoList)
 		var todos = fetchData()
 		localStorage.setItem("todos", JSON.stringify(todos))
 		if (todoList.length > 0) {
@@ -115,13 +124,21 @@ function HomePage(props) {
 		}
 	}
 
+	function handleLogout() {
+		localStorage.clear()
+		navigate('/login')
+	}
+
 	return (
 		<div>
 			<header>
 				<nav className='nav-header'>
 					<h4>Todo App</h4>
 					<button className='create-todo' onClick={createTODO}>+ Create new TODO</button>
-					<button className='logout'>Logout</button>
+					<div className='nav_buttons'>
+						<button className={'delete_all hidden'}  onClick={handleDeleteMul}>Delete Selected</button>
+						<button className='logout' onClick={handleLogout}>Logout</button>
+					</div>
 				</nav>
 			</header>
 			<div className='tasks-list'>

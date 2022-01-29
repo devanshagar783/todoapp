@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './loginPage.css'
-import {validateUser} from './LoginActions'
+import { validateUser } from './Actions'
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const axios = require('axios')
@@ -10,10 +10,6 @@ function LoginPage(props) {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    // const [token, setToken] = useState('')
-    // const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-    // console.log("Props:",props)
     useEffect(() => {
         if (localStorage.getItem("token")) {
             navigate('/')
@@ -45,11 +41,10 @@ function LoginPage(props) {
                     const token = response.data.token
                     props.validateUser(token)
                     localStorage.setItem("token", token)
-                    // console.log("Store:",props.getState())
                     navigate('/')
                 })
                 .catch(error => {
-                    console.log("Error: ", error)
+                    alert("ERRROR:", error)
                     const token = ""
                     props.validateUser(token)
                 })
@@ -59,22 +54,20 @@ function LoginPage(props) {
     }
 
     return (
-        // <div>
-            <div className='login-div'>
-                <h1>Please Login</h1>
-                <form onSubmit={SubmitForm}>
-                    <div>
-                        <label>Email address:</label>
-                        <input type="email" value={email} onChange={handleEmailChange} />
-                    </div>
-                    <div>
-                        <label>Password:</label>
-                        <input type="password" value={password} onChange={handlePasswordChange} />
-                    </div>
-                    <button type='Submit'>Submit</button>
-                </form>
-            </div>
-        // </div>
+        <div className='login-div'>
+            <h1>Please Login</h1>
+            <form onSubmit={SubmitForm}>
+                <div>
+                    <label>Email address:</label>
+                    <input type="email" value={email} onChange={handleEmailChange} />
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input type="password" value={password} onChange={handlePasswordChange} />
+                </div>
+                <button type='Submit'>Submit</button>
+            </form>
+        </div>
     )
 }
 

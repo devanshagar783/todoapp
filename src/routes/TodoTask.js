@@ -6,7 +6,7 @@ import './TodoTask.css'
 function TodoTask(props) {
 
 	const navigate = useNavigate()
-	const [title, setTitle] = useState('')//
+	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [dueDate, setDueDate] = useState(new Date())
 	const [priority, setPriority] = useState('Medium')
@@ -14,8 +14,10 @@ function TodoTask(props) {
 	const store = useStore()
 
 	useEffect(() => {
-		if (task_index.id) {
-			console.log("Task:",task_index.id)
+		if (!localStorage.getItem("token")) {
+			navigate('/login')
+		}		
+		else if (task_index.id) {
 			const tod = store.getState().todos[task_index.id]
 			setTitle(tod.title)
 			setDescription(tod.des)

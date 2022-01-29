@@ -6,6 +6,7 @@
 
 .nav-header{
     display: flex;
+    width: 100%;
     flex-direction: row;
     justify-content: space-between;
     background-color: aliceblue;
@@ -14,12 +15,17 @@
     padding: 0px 30px;
 }
 
-.logout, .create-todo{
+.logout, .create-todo, .delete_all{
     padding: 5px;
     background-color: rgb(83, 141, 216);
     border: none;
     border-radius: 8px;
     color: white;
+    cursor: pointer;
+}
+
+.delete_all{
+    margin-right: 20px;
 }
 
 .tasks-list{
@@ -33,10 +39,8 @@
     border: 1px solid;
     flex-direction: row;
     justify-content: space-evenly;
-    /* align-items: center; */
     margin-bottom: 20px;
     padding: 20px;
-    /* margin: 0px 50% 20px 50%; */
     width: 700px;
 }
 
@@ -52,4 +56,8 @@
     height: 20px;
     margin-left: 20px;
     cursor: pointer;
+}
+
+.disable_del{
+    background-color: gray;
 }
