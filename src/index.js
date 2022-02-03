@@ -14,10 +14,10 @@ ReactDOM.render(
 	<BrowserRouter>
 		<Provider store={store}>
 			<Routes>
-				<Route path="/" element={<HomePage />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/create-todo-task" element={<TodoTask />} />
-				<Route path="/update-task/:id" element={<TodoTask />} />
+				<Route path="/todoapp/" element={<HomePage />} />
+				<Route path="/todoapp/login" element={<LoginPage />} />
+				<Route path="/todoapp/create-todo-task" element={<TodoTask />} />
+				<Route path="/todoapp/update-task/:id" element={<TodoTask />} />
 				<Route path='*' element={<NotFound />} />
 			</Routes>
 		</Provider>

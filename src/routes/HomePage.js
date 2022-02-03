@@ -16,7 +16,7 @@ function HomePage(props) {
 
 	useEffect(() => {
 		if (!localStorage.getItem("token")) {
-			navigate('/login')
+			navigate('/todoapp/login')
 		}
 		setTodoList(fetchData())
 	}, [])
@@ -27,11 +27,11 @@ function HomePage(props) {
 	}, [todoList.length])
 
 	const createTODO = () => {
-		navigate('/create-todo-task')
+		navigate('/todoapp/create-todo-task')
 	}
 
 	const handleEdit = (index) => {
-		navigate(`/update-task/${index}`)
+		navigate(`/todoapp/update-task/${index}`)
 	}
 
 	const handleDelete = (index) => {
@@ -127,7 +127,7 @@ function HomePage(props) {
 	function handleLogout() {
 		localStorage.clear()
 		props.todos.length = 0
-		navigate('/login')
+		navigate('/todoapp/login')
 	}
 
 	return (

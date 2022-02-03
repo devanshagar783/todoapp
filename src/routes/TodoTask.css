@@ -17,10 +17,11 @@
 
 .todo-main-div .logout-div{
     display: flex;
-    justify-content: end;
+    flex-direction: column;
 }
 
 .logout-div .logout-btn{
+    align-self: flex-end;
     padding: 5px;
     background-color: rgb(83, 141, 216);
     border: none;

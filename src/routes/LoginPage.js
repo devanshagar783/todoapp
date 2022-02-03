@@ -12,7 +12,7 @@ function LoginPage(props) {
     const [password, setPassword] = useState('')
     useEffect(() => {
         if (localStorage.getItem("token")) {
-            navigate('/')
+            navigate('/todoapp/')
         }
     })
 
@@ -41,7 +41,7 @@ function LoginPage(props) {
                     const token = response.data.token
                     props.validateUser(token)
                     localStorage.setItem("token", token)
-                    navigate('/')
+                    navigate('/todoapp/')
                 })
                 .catch(error => {
                     alert("ERRROR:", error)

@@ -15,7 +15,7 @@ function TodoTask(props) {
 
 	useEffect(() => {
 		if (!localStorage.getItem("token")) {
-			navigate('/login')
+			navigate('/todoapp/login')
 		}
 		else if (task_index.id) {
 			const tod = store.getState().todos[task_index.id]
@@ -59,7 +59,7 @@ function TodoTask(props) {
 			}
 			props.todos.push(todo)
 		}
-		navigate('/')
+		navigate('/todoapp/')
 	}
 
 	const disablePastDates = () => {
@@ -79,7 +79,7 @@ function TodoTask(props) {
 	function handleLogout() {
 		localStorage.clear()
 		props.todos.length = 0
-		navigate('/login')
+		navigate('/todoapp/login')
 	}
 
 	return (

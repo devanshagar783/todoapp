@@ -7,13 +7,13 @@ export default function NotFound() {
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
-            navigate('/login')
+            navigate('/todoapp/login')
         }
     }, [])
 
     return (
         <h2>
-            Looks like you are lost in space. <a href="/">Click here</a> to go home
+            Looks like you are lost in space. <a href="/todoapp/">Click here</a> to go home
         </h2>
     )
 }
